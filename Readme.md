@@ -35,32 +35,56 @@ The program has three main starting points:
 ### Light scattering (ray tracing in the midplane)
 In this example, we want to plot the null geodesics for the Fru16 metric.
 
+
 Setup Ujti from scratch:
+
 Generate the Fortran source code for the metric (necessary only once)
+
 `maxima -b metric-frutos.mac`
+
 Compile the necessary solvers and auxiliary modules (necessary only once)
+
 `./make_ujti.sh -num numeric/coord.f90`
+
 `./make_ujti.sh -num numeric/indiv-ngeod-solver.f90`
+
 `./make_ujti.sh -num numeric/nsl-solver.f90`
+
 `./make_ujti.sh -num symbolic/geq-sphax-base.f90`
+
 Compile the metric (necessary only once)
+
 `./make_ujti.sh -symb frutos`
 
+
 Ray-tracing steps:
+
+
 Compile the ray tracing binary for the Fru16 metric (necessary only once)
+
 `./raytr_make.sh frutos`
+
 Run the ray tracing binary. Check the configuration in the file. Notice the dataid in the file.
+
 `./raytr_run.sh frutos`
+
 Plot the geodesics. Notice the dataid in the file.
+
 `python raytr_plot.py`
 
 ### Light curves for hotspots
 After the Ujti setup is done, do the following:
+
 Compile and run the ztoa (redshift+time of arrival) binary. Check the configuration in the file. Notice the dataid in the file. Repeat for different metrics, neutron star parameters or inclinations.
+
 `./ztoa_make_run.sh`
+
 Compute the light curve for a specific hotspot, specify configuration in command line args. Repeat for different hotspot configurations (location, size, shape). In this example, a circular hotspot of colatitude 45° and ang. radius 10°
+
 `python lchotspot_get.py SHFT-161-frutos-circ_45_10-i0 SHFT-161-frutos-i0 45 10 0`
+
 Plot the light curve. Notice the dataid in the file.
+
 `python lchotspot_plot.py`
 
 
@@ -84,6 +108,7 @@ BSD License
 
 Copyright (c) 2019 Andre Oliva.
 All rights reserved.
+
 
 Redistribution and use in source and binary forms are permitted
 provided that the above copyright notice and this paragraph are
