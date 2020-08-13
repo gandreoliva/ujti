@@ -65,8 +65,8 @@ Plot the light curve. Notice the dataid in the file.
 # License
 ---
 Please acknowledge any use of this software by choosing any of the following means:
-* Citation to Oliva-Mercado and Frutos-Alfaro 2020 (MNRAS, subm.) arXiv:2006.05948
-* Acknowledgment including the URL of availability of the code (either cinespa.ucr.ac.cr or gandreoliva.org)
+- Citation to Oliva-Mercado and Frutos-Alfaro 2020 (MNRAS, subm.) arXiv:2006.05948
+- Acknowledgment including the URL of availability of the code (either cinespa.ucr.ac.cr or gandreoliva.org)
 
 If you find this software useful, I encourage you to drop me an email.
 ---
@@ -88,6 +88,3 @@ permission.
 THIS SOFTWARE IS PROVIDED “AS IS” AND WITHOUT ANY EXPRESS OR IMPLIED
 WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-
-
-> Last update: 13.08.2020
