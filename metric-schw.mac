@@ -1,0 +1,24 @@
+
+load("symbolic/potential_def.mac")$
+
+/*
+
+Schwarzschild metric
+
+((maxima metric)) --> make_ujti.sh --> ray-tracing applications
+Run as: maxima -b metric-name.mac
+
+*/
+
+pv: (1-2*m/r)$
+pw: 0$
+px: (1-2*m/r)**(-1)$
+py: r**2$
+pz: r**2*sin(th)**2$
+
+metric_parameters: [m]$
+metric_name: "schw"$
+
+dir: "gensrc/"$
+
+write_pot_fortran()$

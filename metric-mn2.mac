@@ -1,0 +1,85 @@
+load("symbolic/potential_def.mac")$
+
+/*
+
+Manko-Novikov metric
+
+((maxima metric)) --> make_ujti.sh --> ray-tracing applications
+Run as: maxima -b metric-name.mac
+
+
+Definitions
+
+Mass
+
+M = kk*(1 + alpha**2)/(1 - alpha**2)
+
+a = - 2*alpha*kk/(1 - alpha**2)
+
+q = - kk**3*alpha2
+
+Spin
+
+J = - 2*alpha*kk**2*(1 + alpha**2)/(1 - alpha**2) = M*a
+
+Quadrupole
+
+M_2 = kk**3*(alpha2 + 4*alpha**2*(1 + alpha**2)/(1 - alpha**2)**3)
+    = - kk**3*alpha2 - M*a**2 = q - M*a**2
+
+alpha2 = - qHT/kk**3
+
+*/
+
+/*
+kk    : sqrt(m^2 - a^2)$
+alpha : (kk - m)/a$
+*/
+
+x: (r - m)/kk$
+y: cos(th)$
+
+RR: sqrt(x^2 + y^2 - 1)$
+
+P0: 1$
+P1: x*y/RR$
+P2: (3*P1^2 - 1)/2$
+P3: 1/2*(5*P1^3 - 3*P1)$
+
+/* According to Jonathan R Gair, Chao Li, and Ilya Mandel */
+
+chi1: - 1 + (x - y)/RR*(P0 + P1/RR + P2/RR^2)$
+chi2:   1 - (x + y)/RR*(P0 - P1/RR + P2/RR^2)$
+
+aa: - alpha*exp(- 2*alpha2*chi1)$
+bb: alpha*exp(2*alpha2*chi2)$
+
+Af: (x^2 - 1)*(1 + aa*bb)^2 - (1 - y^2)*(bb - aa)^2$
+Bf: (x + 1 + (x - 1)*aa*bb)^2 + ((1 + y)*aa + (1 - y)*bb)^2$
+Cf: (x^2 - 1)*(1 + aa*bb)*(bb - aa - y*(aa + bb))
+   + (1 - y^2)*(bb - aa)*(1 + aa*bb + x*(1 - aa*bb))$
+
+psi: alpha2*P2/RR^3$
+
+/* According to Georgios Lukes-Gerakopoulos, Theocharis A. Apostolatos, and George Contopoulos */
+
+chi: (1/2)*log((x**2 - 1)/(x**2 - y**2)) + 9/6*alpha2^2/RR^6*(P3*P3 - P2*P2) + 2*alpha2*(x*P0/RR - y*P1/RR^2 + x*P2/RR^3 - 1)$
+
+f: (Af/Bf)*exp(2*psi)$
+
+omega: - 2*kk*(2*alpha/(1 - alpha^2) - Cf/Af*exp(- 2*psi))$
+
+e2gamma: Af*exp(2*chi)/((1 - alpha^2)^2*(x^2 - 1))$
+
+pv: f$
+pw: f*omega$
+px: (e2gamma/f)*((x^2 - y^2)/(x^2 - 1))$
+py: kk^2*e2gamma*(x^2 - y^2)/f$
+pz: kk^2*(x^2 - 1)*(1 - y^2)/f - f*omega^2$
+
+metric_parameters: [m,a,q,kk,alpha,alpha2]$
+metric_name: "mn2"$
+
+dir: "gensrc/"$
+
+write_pot_fortran()$

@@ -1,0 +1,37 @@
+/*
+
+Glampedakis-Babak metric
+inverted (covariant components)
+
+a = aHT = aFrutos
+q = qHT = -qFrutos
+
+
+((maxima metric)) --> make_ujti.sh --> ray-tracing applications
+Run as: maxima -b metric-name.mac
+
+*/
+
+
+load("symbolic/potential_def.mac")$
+
+Delta: r^2 - 2*m*r + a^2$
+sigma2: r^2 + a^2*cos(th)^2$
+P2: (3*cos(th)^2 - 1)/2$
+
+epsilon: -q/m^3$
+F1: - 5*(r - m)*(2*m**2 + 6*m*r - 3*r**2)/(8*m*r*(r - 2*m)) + 15*r*(r - 2*m)/(16*m**2)*log(1 - 2*m/r)$
+F2: 5*(2*m**2 - 3*m*r - 3*r**2)/(8*m*r) - 15*(r**2 - 2*m**2)/(16*m**2)*log(1 - 2*m/r)$
+
+pv: (1 - 2*m*r/sigma2) + 2*epsilon*P2*F1*(1 - 2*m/r)$
+pw: - 2*m*a*r*sin(th)**2/sigma2$
+px: sigma2/Delta - 2*epsilon*P2*F1/(1 - 2*m/r)$
+py: sigma2 - 2*epsilon*r**2*P2*F2$
+pz: (r**2 + a**2 + 2*m*a**2*r*sin(th)**2/sigma2)*sin(th)**2 - 2*epsilon*r**2*P2*F2*sin(th)**2$
+
+metric_parameters: [m,a,q]$
+metric_name: "gb"$
+
+dir: "gensrc/"$
+
+write_pot_fortran()$

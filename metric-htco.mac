@@ -1,0 +1,43 @@
+
+load("symbolic/potential_def.mac")$
+
+/*
+Hartle-Thorne metric
+
+Correct orders (second order in J and M, and first order in q)
+From Frutos 2016 IJAA (eq 13 with q^2 = 0)
+
+a = aKerr
+q = -qFrutos
+
+((maxima metric)) --> make_ujti.sh --> ray-tracing applications
+Run as: maxima -b metric-name.mac
+
+*/
+
+assume(r>0)$
+assume(m>0)$
+
+J: m*a$
+
+P2: 1/2*(3*cos(th)^2 - 1)$
+
+U: m/r$
+
+pv: 1 - 2*U + 2*q/r^3*P2 + 2*m*q*P2/r^4 - 2/3*J^2/r^4*(2*P2+1) $
+
+pw: -2*J/r*sin(th)^2 $
+
+px: 1/(1-2*U)*(16*J^2*P2/r^4 - 2*q*P2/r^3 - 6*m*q*P2/r^4 - 2*J^2/r^4 + 1) $
+
+py: r^2*( 1 - 2*q/r^3*P2 - 5*m*q/r^4*P2 + J^2/r^4*P2 ) $
+
+pz: r^2*sin(th)^2*( 1 - 2*q/r^3*P2 - 5*m*q/r^4*P2 + J^2/r^4*P2 ) $
+
+
+metric_parameters: [m,q,a]$
+metric_name: "htco"$
+
+dir: "gensrc/"$
+
+write_pot_fortran()$

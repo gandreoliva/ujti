@@ -1,0 +1,54 @@
+
+load("symbolic/potential_def.mac")$
+
+/*
+Hartle-Thorne metric
+
+As in the paper Hartle & Thorne 1968 ApJ 153 897
+
+with corrections:
+  * in F: Q22 is positive
+  * The associated Legendre functions Q12, Q22 have an absolute value inside the logarithm
+    because the interval of interest is r>2M => x>1. This interval is NOT the
+    usual domain -1 < x < 1, where the functions are orthogonal (which is not
+    relevant in this application).
+
+This is NOT a solution of the EFE to the order specified.
+
+a = aKerr
+q = -qFrutos
+
+((maxima metric)) --> make_ujti.sh --> ray-tracing applications
+Run as: maxima -b metric-name.mac
+
+*/
+
+assume(r>0)$
+assume(m>0)$
+J: m*a$
+
+P2: 1/2*(3*cos(th)^2 - 1)$
+
+Q12(x) := sqrt(x^2-1)*(3/2*x*log( abs((x+1)/(1-x)) ) - (3*x^2-2)/(x^2-1) )$
+
+Q22(x) := (x^2-1)*(3/2*log( abs((x+1)/(1-x)) ) - (3*x^3-5*x)/(x^2-1)^2 )$
+
+F: 1 + 2*P2*(  -2*J^2/(m*r^3)*(1+2*m/r) + 5/8*(q-J^2/m)/m^3*( 2*m/sqrt(r*(r-2*m))*Q12(r/m-1) + Q22(r/m-1) )  )$
+
+pv: (1-2*m/r+2*J^2/r^4)*(  1+2*( J^2/(m*r^3)*(1+m/r) + 5/8*(q-J^2/m)/m^3*Q22(r/m-1) )*P2  )$
+
+pw: -2*J/r*sin(th)^2 * F$
+
+px: (1-2*m/r+2*J^2/r^4)^(-1)*(  1-2*P2*( J^2/(m*r^3)*(1-5*m/r) + 5/8*(q-J^2/m)/m^3*Q22(r/m-1) )  )$
+
+py: F*r^2$
+
+pz: F*r^2*sin(th)^2$
+
+
+metric_parameters: [m,q,a]$
+metric_name: "ht"$
+
+dir: "gensrc/"$
+
+write_pot_fortran()$

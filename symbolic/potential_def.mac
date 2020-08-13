@@ -1,0 +1,125 @@
+/*-----------------------------------------------------------------------------
+Writing of potentials and their derivatives to fortran source code
+
+Directions: write a maxima script with the potentials using the variables
+defined below. After defining everything, call the function write_pot_fortran()
+to calculate and write.
+
+------------------------------------------------------------------------------*/
+
+print("
+--- -- -- -- ---._      UJTI - general geodesic ray-tracer
+                o `.                                   o     _
+                    \\          Cinespa UCR 2019  *  ( ) GANDREOLIVA.org
+=======================================================================
+  Symbolic metric in Maxima --> Potentials and derivatives
+  for the Fortran numeric modules.
+-----------------------------------------------------------------------
+")$
+
+print("Coordinate names: t,r,th,ph,")$
+print("Potential names: pv,pw,px,py,pz")$
+print("The potentials can only depend on r and th")$
+print("Parameters: put (lowercase) symbols in a list called metric_parameters")$
+print("Name of the metric : metric_name")$
+print("Output dir: dir (default: '', working directory)")$
+print("-----------------------------------------------------------------------")$
+
+dir : "" $
+
+
+/* Fortran code that wraps up the metric potentials and derivs. in a module */
+
+code1 :
+" use, intrinsic :: iso_fortran_env, dp=>real64
+ implicit none"$
+
+code2 :
+"  save
+contains
+  function get_potential(pos) result(pot)
+    real(dp), dimension(0:3) :: pos
+    real(dp), dimension(1:5) :: pot
+    ! Index convention:
+    !   pot: {1: V, 2: W, 3: X, 4: Y, 5: Z}
+    real(dp) :: t,r,th,ph
+    t=pos(0); r=pos(1); th=pos(2); ph=pos(3)"$
+
+code3 :
+"  end function
+  function get_deriv_potential(pos) result(dpot)
+    real(dp), dimension(0:3) :: pos
+    real(dp), dimension(1:5,1:2) :: dpot
+    ! Index convention:
+    !   dpot, first index:
+    !     {1: V, 2: W, 3: X, 4: Y, 5: Z}
+    !   dpot, second index: (variable w.r.t. which we differentiate)
+    !     {1: r, 2: th}
+    real(dp) :: t,r,th,ph
+    t=pos(0); r=pos(1); th=pos(2); ph=pos(3)"$
+
+code4 :
+"  end function
+end module
+"$
+
+
+
+/*
+write_pot_fortran()
+  Writes the potentials and derivs. to the following files:
+    [metric_name]-pot.f90: the potentials
+    [metric_name]-dpot.f90: the derivatives of the potentials
+    [metric_name]-param.f90: the list of parameters (only def. of vars.)
+    [metric_name].f90: a Fortran module named [metric_name], with functions
+      to access the potentials and their derivatives.
+*/
+
+write_pot_fortran() := block(
+  pot_func: [pv, pw, px, py, pz],
+  dpot_dr: [0,0,0,0,0],
+  dpot_dth: [0,0,0,0,0],
+
+  for i thru 5 do(
+    dpot_dr[i]:  diff(pot_func[i],r),
+    dpot_dth[i]: diff(pot_func[i],th)
+  ),
+
+  load("f90"),
+
+  with_stdout( sconcat(dir,metric_name,"-pot.f90"),
+    for i thru 5 do(
+      f90( pot(i) = pot_func[i] )
+    )
+  ),
+
+  with_stdout( sconcat(dir,metric_name,"-dpot.f90"),
+    for i thru 5 do(
+      f90( dpot(i,1) = dpot_dr[i] ),
+      f90( dpot(i,2) = dpot_dth[i] )
+    )
+  ),
+
+
+  with_stdout( sconcat(dir,metric_name,"-param.f90"),
+    for metric_parameter in metric_parameters do(
+      print("real(dp) :: ",metric_parameter)
+    )
+  ),
+
+  with_stdout( sconcat(dir,metric_name,".f90"),
+    print(sconcat("module ",metric_name)),
+    print(code1),
+    print(sconcat("  include \"",metric_name,"-param.f90","\"")),
+    print(code2),
+    print(sconcat("    include \"",metric_name,"-pot.f90","\"")),
+    print(code3),
+    print(sconcat("    include \"",metric_name,"-dpot.f90","\"")),
+    print(code4)
+   ),
+
+   print("Done (if no errors)."),
+   print("Remember to check that real quantities are treated as double precision!
+   If necessary, run the python script f90-single2double.py to make the conversion")
+
+)$

@@ -1,0 +1,90 @@
+/*-----------------------------------------------------------------------------
+
+Generator of the geodesic equations for a general axisymmetric stationary metric
+in spherical-like coordinates. This serves as a basis for any metric that can
+be expressed as ds^2 = -V dt + 2W dt dph + X dr^2 + Y dth^2 + Z dph^2
+
+Note: indices in Maxima run from 1 thru 4, and in Fortran from 0 to 3.
+
+Output files:
+    sphax-metric.f90 : general metric components (expecting "potentials")
+    sphax-geq.f90 : general geodesic equations (expecting "potentials" and
+      their derivatives w.r.t. all spherical coordinates)
+
+(This is needed to run only once; the specific metric is specified elsewhere)
+------------------------------------------------------------------------------*/
+
+load("ctensor")$
+
+/* Spherical-like coordinates*/
+ct_coords:[t,r,th,ph]$
+
+
+/* lg: covariant metric g_{mu,nu} */
+lg: zeromatrix(4,4)$
+
+
+/*
+  define the metric "potentials" V,W,X,Y,Z
+  example: px means the *p*otential *x*
+  The potentials only depend on r and th
+*/
+depends([pv, pw, px, py, pz],[r,th])$
+
+lg[1,1]: -pv $
+lg[1,4]: pw $
+lg[4,1]: lg[1,4] $
+lg[2,2]: px $
+lg[3,3]: py $
+lg[4,4]: pz $
+
+
+/* calculate the inverse metric and mixed christoffel symbols */
+cmetric()$
+christof(false)$
+
+pot_symb: [pv, pw, px, py, pz]$
+
+for i thru 4 do
+    for j thru 4 do
+        for k thru 4 do
+            for l thru 2 do
+              for h thru 5 do(
+                  mcs[i,j,k]: subst(dpot[h,l],'diff(pot_symb[h],ct_coords[l+1]),mcs[i,j,k])
+                )$
+
+for i thru 4 do
+  for j thru 4 do
+    for k thru 4 do
+      for h thru 5 do(
+        mcs[i,j,k]: subst(pot[h],pot_symb[h],mcs[i,j,k])
+      )$
+
+for i thru 4 do
+  for j thru 4 do
+    for k thru 5 do(
+      lg[i,j]: subst(pot[k],pot_symb[k],lg[i,j])
+    )$
+
+/* right hand side of the geodesic equations */
+geqrhs_symb: [0,0,0,0]$
+
+u: [vel(0), vel(1), vel(2), vel(3)]$
+
+for k thru 4 do
+    for i thru 4 do
+        for j thru 4 do
+            geqrhs_symb[k]: geqrhs_symb[k] - mcs[i,j,k]*u[i]*u[j]$
+
+
+load("f90")$
+
+/* Writing the general metric */
+with_stdout( "sphax-metric.f90",
+  for i thru 4 do for j thru 4 do ( f90(metric(i-1,j-1) = lg[i,j]) )
+)$
+
+/* Writing the geodesic equations */
+with_stdout( "sphax-geq.f90",
+  for i thru 4 do ( f90( geqrhs(i-1) = geqrhs_symb[i]), print("") )
+)$
