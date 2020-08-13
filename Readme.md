@@ -1,3 +1,5 @@
+# Ujti
+
 ```
 --- -- -- -- ---._      UJTI - general geodesic ray-tracer             
                 o `.                                   o     _         
@@ -5,23 +7,23 @@
 =======================================================================
 ```
 
-# Overview
-Ujti (pronounced in English as 'OOhh-tee') is a software package that uses Maxima, Fortran and Python, and calculates null geodesics (as well as other applications) for arbitrary axisymmetric metrics.
+## Overview
+Ujti (pronounced in English as 'OOhh-tee', from Nawat language 'way') is a software package that uses Maxima, Fortran and Python, and calculates null geodesics (as well as other applications) for arbitrary axisymmetric metrics.
 
 The program has three main starting points:
 
 1. Symbolic calculations (Maxima)
-    *    Generation of general geodesic equations for an axisymmetric metric (auxiliary program)
-    *    Potential definition: takes a metric and generates Fortran code to evaluate it in 'numerical calculations'
+    *    Generation of the geodesic equations from any (analytically defined) axisymmetric metric
 2. Numerical calculations (Fortran)
     *    Ray-tracing: traces null geodesics
-    *    Gravitational redshift, which also provides data for surface_colors and polar_cap
+    *    General relativistic frequency shift and time of arrival (provides data for the post-processing applications)
 3. Post-processing (Python)
-    *    Plotting
-    *    Filter an arbitrary polar cap (or spot)
-    *    Plot surface points of the neutron star
+    *    Thermal spectrum of the neutron star
+    *    Light curves from a circular hotspot
+    *    General relativistic redshift from the surface of the neutron star
+    *    Shape of the neutron star as observer by a distant observer
 
-# Compilation
+## Setup instructions
 0.    Check that the following (empty) directories exist: `bin/so/`, `data/zt/meta`, `gensrc/`
 1.    Symbolic calculations: (metric->geod. eqns.) just run `maxima -b [name of the metric file].mac`. This generates the Fortran source code in `gensrc/`
 2.    Solvers: `./make_ujti.sh -num [name of the solver file].f90`. The available solver files are in `numeric/`, and they provide modules and .o objects that are reused in all applications (no binary executables are generated). The auxiliary module in `coord.f90` must also be compiled this way. Important note: the file `symbolic/geq-sphax-base.f90` can be also compiled this way, and must be compiled before the next step.
@@ -29,8 +31,8 @@ The program has three main starting points:
 4.    Numerical applications, in general: they should be compiled by including the .o files for the base axisymmetric modules, the specific metric, the solver and the coordinate transformations module.
 
 
-# Quick guides
-## Light scattering (ray tracing in the midplane)
+## Quick guides
+### Light scattering (ray tracing in the midplane)
 In this example, we want to plot the null geodesics for the Fru16 metric.
 
 Setup Ujti from scratch:
@@ -52,7 +54,7 @@ Run the ray tracing binary. Check the configuration in the file. Notice the data
 Plot the geodesics. Notice the dataid in the file.
 `python raytr_plot.py`
 
-## Light curves for hotspots
+### Light curves for hotspots
 After the Ujti setup is done, do the following:
 Compile and run the ztoa (redshift+time of arrival) binary. Check the configuration in the file. Notice the dataid in the file. Repeat for different metrics, neutron star parameters or inclinations.
 `./ztoa_make_run.sh`
@@ -62,11 +64,14 @@ Plot the light curve. Notice the dataid in the file.
 `python lchotspot_plot.py`
 
 
-# License
+## Version
+This is Ujti version 3.0. There was a previous version Ujti 2.0, still available from https://bitbucket.org/gandreoliva/ujti2 , that included the calculation of gravitational lenses. Ujti 2.0 was used in the article https://doi.org/10.15517/rmta.v22i2.20723 .
+
+## License
 ---
 Please acknowledge any use of this software by choosing any of the following means:
 *    Citation to Oliva-Mercado and Frutos-Alfaro 2020 (MNRAS, subm.) arXiv:2006.05948
-*    Acknowledgment including the URL of availability of the code (either cinespa.ucr.ac.cr or gandreoliva.org)
+*    Acknowledgment including the URL of availability of the code (either http://cinespa.ucr.ac.cr or http://gandreoliva.org)
 
 If you find this software useful, I encourage you to drop me an email.
 ---
