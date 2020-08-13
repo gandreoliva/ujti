@@ -62,4 +62,32 @@ Plot the light curve. Notice the dataid in the file.
 `python lchotspot_plot.py`
 
 
+# License
+---
+Please acknowledge any use of this software by choosing any of the following means:
+* Citation to Oliva-Mercado and Frutos-Alfaro 2020 (MNRAS, subm.) arXiv:2006.05948
+* Acknowledgment including the URL of availability of the code (either cinespa.ucr.ac.cr or gandreoliva.org)
+
+If you find this software useful, I encourage you to drop me an email.
+---
+
+BSD License
+
+Copyright (c) 2019 Andre Oliva.
+All rights reserved.
+
+Redistribution and use in source and binary forms are permitted
+provided that the above copyright notice and this paragraph are
+duplicated in all such forms and that any documentation, advertising
+materials, and other materials related to such distribution and use
+acknowledge that the software was developed by Andre Oliva. The
+name of the Andre Oliva may not be used to endorse or promote
+products derived from this software without specific prior written
+permission.
+
+THIS SOFTWARE IS PROVIDED “AS IS” AND WITHOUT ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+
 > Last update: 13.08.2020
