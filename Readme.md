@@ -38,6 +38,10 @@ In this example, we want to plot the null geodesics for the Fru16 metric.
 
 Setup Ujti from scratch:
 
+Create the necessary directories
+`./setup_directories.sh`
+
+
 Generate the Fortran source code for the metric (necessary only once)
 
 `maxima -b metric-frutos.mac`
