@@ -11,22 +11,22 @@ Ujti (pronounced in English as 'OOhh-tee') is a software package that uses Maxim
 The program has three main starting points:
 
 1. Symbolic calculations (Maxima)
-  * Generation of general geodesic equations for an axisymmetric metric (auxiliary program)
-  * Potential definition: takes a metric and generates Fortran code to evaluate it in 'numerical calculations'
+    *    Generation of general geodesic equations for an axisymmetric metric (auxiliary program)
+    *    Potential definition: takes a metric and generates Fortran code to evaluate it in 'numerical calculations'
 2. Numerical calculations (Fortran)
-  * Ray-tracing: traces null geodesics
-  * Gravitational redshift, which also provides data for surface_colors and polar_cap
+    *    Ray-tracing: traces null geodesics
+    *    Gravitational redshift, which also provides data for surface_colors and polar_cap
 3. Post-processing (Python)
-  * Plotting
-  * Filter an arbitrary polar cap (or spot)
-  * Plot surface points of the neutron star
+    *    Plotting
+    *    Filter an arbitrary polar cap (or spot)
+    *    Plot surface points of the neutron star
 
 # Compilation
-0. Check that the following (empty) directories exist: `bin/so/`, `data/zt/meta`, `gensrc/`
-1. Symbolic calculations: (metric->geod. eqns.) just run `maxima -b [name of the metric file].mac`. This generates the Fortran source code in `gensrc/`
-2. Solvers: `./make_ujti.sh -num [name of the solver file].f90`. The available solver files are in `numeric/`, and they provide modules and .o objects that are reused in all applications (no binary executables are generated). The auxiliary module in `coord.f90` must also be compiled this way. Important note: the file `symbolic/geq-sphax-base.f90` can be also compiled this way, and must be compiled before the next step.
-3. Fortran module for the specific metric: `./make_ujti.sh -symb [code of the metric]`. This provides the metric modules for the numerical calculations.
-4. Numerical applications, in general: they should be compiled by including the .o files for the base axisymmetric modules, the specific metric, the solver and the coordinate transformations module.
+0.    Check that the following (empty) directories exist: `bin/so/`, `data/zt/meta`, `gensrc/`
+1.    Symbolic calculations: (metric->geod. eqns.) just run `maxima -b [name of the metric file].mac`. This generates the Fortran source code in `gensrc/`
+2.    Solvers: `./make_ujti.sh -num [name of the solver file].f90`. The available solver files are in `numeric/`, and they provide modules and .o objects that are reused in all applications (no binary executables are generated). The auxiliary module in `coord.f90` must also be compiled this way. Important note: the file `symbolic/geq-sphax-base.f90` can be also compiled this way, and must be compiled before the next step.
+3.    Fortran module for the specific metric: `./make_ujti.sh -symb [code of the metric]`. This provides the metric modules for the numerical calculations.
+4.    Numerical applications, in general: they should be compiled by including the .o files for the base axisymmetric modules, the specific metric, the solver and the coordinate transformations module.
 
 
 # Quick guides
@@ -65,8 +65,8 @@ Plot the light curve. Notice the dataid in the file.
 # License
 ---
 Please acknowledge any use of this software by choosing any of the following means:
-- Citation to Oliva-Mercado and Frutos-Alfaro 2020 (MNRAS, subm.) arXiv:2006.05948
-- Acknowledgment including the URL of availability of the code (either cinespa.ucr.ac.cr or gandreoliva.org)
+*    Citation to Oliva-Mercado and Frutos-Alfaro 2020 (MNRAS, subm.) arXiv:2006.05948
+*    Acknowledgment including the URL of availability of the code (either cinespa.ucr.ac.cr or gandreoliva.org)
 
 If you find this software useful, I encourage you to drop me an email.
 ---
