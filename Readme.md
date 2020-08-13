@@ -72,8 +72,9 @@ This is Ujti version 3.0. There was a previous version Ujti 2.0, still available
 ---
 
 Please acknowledge any use of this software by choosing any of the following means:
-*    Citation to Oliva-Mercado and Frutos-Alfaro 2020 (MNRAS, subm.) arXiv:2006.05948
-*    Acknowledgment including the URL of availability of the code (either http://cinespa.ucr.ac.cr or http://gandreoliva.org)
+
+  *    Citation to Oliva-Mercado and Frutos-Alfaro 2020 (MNRAS, subm.) arXiv:2006.05948
+  *    Acknowledgment including the URL of availability of the code (either http://cinespa.ucr.ac.cr or http://gandreoliva.org)
 
 If you find this software useful, I encourage you to drop me an email.
 
